@@ -1,0 +1,226 @@
+.budget-tracker {
+  width: 100%;
+}
+
+.budget-tracker h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+}
+
+.budget-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 15px;
+  margin-bottom: 25px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  align-items: flex-end;
+}
+
+.budget-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.budget-form label {
+  font-weight: 600;
+  color: #555;
+  font-size: 0.95em;
+}
+
+.budget-form input,
+.budget-form select {
+  padding: 10px 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 1em;
+  transition: border-color 0.3s;
+}
+
+.budget-form input:focus,
+.budget-form select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.budget-form button {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.budget-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.no-budgets {
+  text-align: center;
+  padding: 40px 20px;
+  background: white;
+  border-radius: 10px;
+  color: #999;
+}
+
+.budgets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.budget-item {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-left: 5px solid #667eea;
+  transition: all 0.3s;
+}
+
+.budget-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.budget-item.at-risk {
+  border-left-color: #f59e0b;
+}
+
+.budget-item.exceeded {
+  border-left-color: #ef4444;
+}
+
+.budget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.budget-header h3 {
+  color: #333;
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.btn-delete {
+  background: none;
+  border: none;
+  font-size: 1.3em;
+  cursor: pointer;
+  transition: transform 0.2s;
+  padding: 5px 10px;
+}
+
+.btn-delete:hover {
+  transform: scale(1.2);
+}
+
+.budget-progress {
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
+  transition: width 0.3s ease;
+}
+
+.budget-item.at-risk .progress-fill {
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+}
+
+.budget-item.exceeded .progress-fill {
+  background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+}
+
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95em;
+}
+
+.progress-text span {
+  color: #555;
+  font-weight: 600;
+}
+
+.percentage {
+  background: #f0f0f0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.percentage.on-track {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.percentage.at-risk {
+  background: #fef3c7;
+  color: #78350f;
+}
+
+.percentage.exceeded {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+.budget-details {
+  font-size: 0.95em;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.remaining,
+.exceeded {
+  display: block;
+  font-weight: 600;
+}
+
+.remaining {
+  color: #065f46;
+}
+
+.exceeded {
+  color: #7f1d1d;
+}
+
+@media (max-width: 768px) {
+  .budget-form {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .budget-form button {
+    width: 100%;
+  }
+
+  .budget-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .budget-header h3 {
+    margin-bottom: 10px;
+  }
+}

@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/api.ts","./src/main.tsx","./src/types.ts","./src/components/addexpense.tsx","./src/components/auth.tsx","./src/components/budgettracker.tsx","./src/components/expensechart.tsx","./src/components/expenselist.tsx","./src/components/monthlysummary.tsx","./src/components/recurringexpenses.tsx","./src/context/authcontext.tsx"],"version":"5.9.3"}
