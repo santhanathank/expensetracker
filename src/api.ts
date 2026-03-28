@@ -1,11 +1,8 @@
 import axios from 'axios'
 
-// Get API URL from environment or use production backend
-const API_URL = (
-  import.meta.env.VITE_API_URL || 
-  (typeof __API_URL__ !== 'undefined' ? __API_URL__ : '') ||
+// Use environment variable or fallback to production backend
+const API_URL = import.meta.env.VITE_API_URL || 
   'https://expense-tracker-api-dhfac2daecgxbags.centralindia-01.azurewebsites.net/api'
-).replace(/\/api$/, '') + '/api'
 
 console.log('API URL:', API_URL)
 
