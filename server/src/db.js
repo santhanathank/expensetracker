@@ -3,12 +3,13 @@ import sql from 'mssql'
 import 'dotenv/config.js'
 import { DefaultAzureCredential } from '@azure/identity'
 
-// Parse connection string or use individual credentials
-const connectionString = process.env.AZURE_SQL_CONNECTION_STRING
-
-const config = connectionString
-  ? parseConnectionString(connectionString)
-  : {
+// Create connection config based on environment
+function createConfig() {
+  const connectionString = process.env.AZURE_SQL_CONNECTION_STRING
+  
+  if (!connectionString) {
+    // Use individual credentials if no connection string
+    return {
       server: process.env.AZURE_SQL_SERVER || 'expensecalculator.database.windows.net',
       database: process.env.AZURE_SQL_DATABASE || 'ExpenseCalculator',
       user: process.env.AZURE_SQL_USERNAME,
@@ -20,22 +21,23 @@ const config = connectionString
         requestTimeout: 30000,
       },
     }
+  }
 
-function parseConnectionString(connStr) {
+  // Parse connection string
   const params = {}
-  connStr.split(';').forEach(param => {
+  connectionString.split(';').forEach(param => {
     const [key, value] = param.split('=')
     if (key && value) {
       params[key.trim()] = value.trim()
     }
   })
 
-  // Extract server and database
+  // Extract values from connection string
   const server = params['Server']?.replace('tcp:', '').split(',')[0] || 'expensecalculator.database.windows.net'
   const database = params['Initial Catalog'] || 'ExpenseCalculator'
   const userId = params['User Id']
   const password = params['Password']
-  const authentication = params['Authentication']
+  const auth = params['Authentication']
 
   const config = {
     server,
@@ -43,26 +45,28 @@ function parseConnectionString(connStr) {
     options: {
       encrypt: true,
       trustServerCertificate: false,
-      connectionTimeout: parseInt(params['Connection Timeout']) || 30000,
+      connectionTimeout: 30000,
       requestTimeout: 30000,
     },
   }
 
-  // Add authentication based on what's in the connection string
-  if (userId && password) {
-    // SQL Authentication
-    config.user = userId
-    config.password = password
-  } else if (authentication === 'Active Directory Integrated' || authentication === 'azure-active-directory-integrated') {
-    // Managed Identity (App Service or local az login)
+  // Use Azure AD authentication (Managed Identity or local)
+  if (auth && (auth.includes('Active Directory') || auth.includes('azure-active-directory'))) {
+    console.log('Using Azure AD authentication with DefaultAzureCredential')
     config.authentication = {
       type: 'azure-active-directory-default',
       options: {
         credential: new DefaultAzureCredential()
       }
     }
-  } else if (authentication === 'Active Directory Default' || !authentication) {
-    // Default Azure AD
+  } else if (userId && password) {
+    // Fallback to SQL authentication
+    console.log('Using SQL authentication')
+    config.user = userId
+    config.password = password
+  } else {
+    // Default: try Managed Identity
+    console.log('No authentication found, trying Managed Identity')
     config.authentication = {
       type: 'azure-active-directory-default',
       options: {
@@ -73,6 +77,8 @@ function parseConnectionString(connStr) {
 
   return config
 }
+
+const config = createConfig()
 
 let pool
 
