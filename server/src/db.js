@@ -1,6 +1,7 @@
 // Azure SQL Database Connection Setup
 import sql from 'mssql'
 import 'dotenv/config.js'
+import { DefaultAzureCredential } from '@azure/identity'
 
 // Parse connection string or use individual credentials
 const connectionString = process.env.AZURE_SQL_CONNECTION_STRING
@@ -34,6 +35,7 @@ function parseConnectionString(connStr) {
   const database = params['Initial Catalog'] || 'ExpenseCalculator'
   const userId = params['User Id']
   const password = params['Password']
+  const authentication = params['Authentication']
 
   const config = {
     server,
@@ -51,10 +53,21 @@ function parseConnectionString(connStr) {
     // SQL Authentication
     config.user = userId
     config.password = password
-  } else if (params['Authentication']) {
-    // Azure AD Authentication
+  } else if (authentication === 'Active Directory Integrated' || authentication === 'azure-active-directory-integrated') {
+    // Managed Identity (App Service or local az login)
     config.authentication = {
-      type: 'default',
+      type: 'azure-active-directory-default',
+      options: {
+        credential: new DefaultAzureCredential()
+      }
+    }
+  } else if (authentication === 'Active Directory Default' || !authentication) {
+    // Default Azure AD
+    config.authentication = {
+      type: 'azure-active-directory-default',
+      options: {
+        credential: new DefaultAzureCredential()
+      }
     }
   }
 
