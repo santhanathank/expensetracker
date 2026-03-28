@@ -1,6 +1,13 @@
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+// Get API URL from environment or use production backend
+const API_URL = (
+  import.meta.env.VITE_API_URL || 
+  (typeof __API_URL__ !== 'undefined' ? __API_URL__ : '') ||
+  'https://expense-tracker-api-dhfac2daecgxbags.centralindia-01.azurewebsites.net/api'
+).replace(/\/api$/, '') + '/api'
+
+console.log('API URL:', API_URL)
 
 const api = axios.create({
   baseURL: API_URL

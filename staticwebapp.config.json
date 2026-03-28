@@ -7,5 +7,6 @@
   "appLocation": ".",
   "outputLocation": "dist",
   "apiLocation": "",
-  "env": "production"
+  "env": "production",
+  "apiConfiguration": "cors"
 }
