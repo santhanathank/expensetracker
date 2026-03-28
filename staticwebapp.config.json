@@ -1,0 +1,11 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/api/*", "/*.{css,svg,jpg,png,gif,ico,js,woff,woff2}"]
+  },
+  "buildCommand": "npm run build",
+  "appLocation": ".",
+  "outputLocation": "dist",
+  "apiLocation": "",
+  "env": "production"
+}
